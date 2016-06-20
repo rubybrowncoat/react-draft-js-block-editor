@@ -5,6 +5,8 @@ var React = require('react');
 var ReactDOM = require('react-dom');
 var DraftJsBlockEditor = require('react-draft-js-block-editor');
 
+var Editor = DraftJsBlockEditor.Editor;
+
 var data = {
   "entityMap": {
     "0": {
@@ -470,7 +472,7 @@ var App = React.createClass({
     return React.createElement(
       'div',
       null,
-      React.createElement(DraftJsBlockEditor, { value: data })
+      React.createElement(Editor, { value: data })
     );
   }
 });
