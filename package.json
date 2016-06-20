@@ -1,6 +1,6 @@
 {
   "name": "react-draft-js-block-editor",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "draft-js Block Editor",
   "main": "lib/DraftJsBlockEditor.js",
   "author": "Matsor Browncoat",
