@@ -1,0 +1,29 @@
+{
+  "name": "react-draft-js-block-editor",
+  "version": "0.0.0",
+  "description": "draft-js Block Editor",
+  "main": "dist/react-draft-js-block-editor.min.js",
+  "homepage": "https://github.com/rubybrowncoat/react-draft-js-block-editor",
+  "authors": [
+    "Matsor Browncoat"
+  ],
+  "moduleType": [
+    "amd",
+    "globals",
+    "node"
+  ],
+  "keywords": [
+    "react",
+    "react-component"
+  ],
+  "license": "MIT",
+  "ignore": [
+    ".editorconfig",
+    ".gitignore",
+    "package.json",
+    "src",
+    "node_modules",
+    "example",
+    "test"
+  ]
+}
