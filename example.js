@@ -469,10 +469,28 @@ var App = React.createClass({
   displayName: 'App',
 
   render: function render() {
+    var _this = this;
+
     return React.createElement(
       'div',
       null,
-      React.createElement(Editor, { value: data })
+      React.createElement(Editor, { ref: function (c) {
+          _this._editor = c;
+        }, value: data }),
+      React.createElement(
+        'div',
+        { onClick: function () {
+            return _this._editor.logData();
+          } },
+        'export'
+      ),
+      React.createElement(
+        'div',
+        { onClick: function () {
+            return _this._editor.toggleEdit();
+          } },
+        'toggle'
+      )
     );
   }
 });

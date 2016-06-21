@@ -21,13 +21,14 @@ var _react2 = _interopRequireDefault(_react);
 
 var _util = require('../util');
 
-var AddButton = (function (_React$Component) {
-  _inherits(AddButton, _React$Component);
+var AddButton = (function (_Component) {
+  _inherits(AddButton, _Component);
 
   function AddButton(props) {
     _classCallCheck(this, AddButton);
 
     _get(Object.getPrototypeOf(AddButton.prototype), 'constructor', this).call(this, props);
+
     this.state = {
       style: {},
       visible: false
@@ -42,49 +43,6 @@ var AddButton = (function (_React$Component) {
   }
 
   // To show + button only when text length == 0
-  // componentWillReceiveProps(newProps) {
-  //   const { editorState } = newProps;
-  //   const contentState = editorState.getCurrentContent();
-  //   const selectionState = editorState.getSelection();
-  //   if (!selectionState.isCollapsed() || selectionState.anchorKey != selectionState.focusKey) {
-  //     // console.log('no sel');
-  //     this.hideBlock();
-  //     return;
-  //   }
-  //   const block = contentState.getBlockForKey(selectionState.anchorKey);
-  //   const bkey = block.getKey();
-  //   if (block.getLength() > 0) {
-  //     this.hideBlock();
-  //     return;
-  //   }
-  //   if (block.getType() !== this.blockType) {
-  //     this.blockType = block.getType();
-  //     if (block.getLength() == 0) {
-  //       setTimeout(this.findNode, 0);
-  //     }
-  //     return;
-  //   }
-  //   if (this.blockKey === bkey) {
-  //     // console.log('block exists');
-  //     if (block.getLength() > 0) {
-  //       this.hideBlock();
-  //     } else {
-  //       this.setState({
-  //         visible: true
-  //       });
-  //     }
-  //     return;
-  //   }
-  //   this.blockKey = bkey;
-  //   if (block.getLength() > 0) {
-  //     // console.log('no len');
-  //     this.hideBlock();
-  //     return;
-  //   }
-  //   setTimeout(this.findNode, 0);
-  // }
-
-  // Show + button regardless of block length
 
   _createClass(AddButton, [{
     key: 'componentWillReceiveProps',
@@ -93,26 +51,74 @@ var AddButton = (function (_React$Component) {
 
       var contentState = editorState.getCurrentContent();
       var selectionState = editorState.getSelection();
-      if (!selectionState.isCollapsed() || selectionState.anchorKey != selectionState.focusKey) {
+
+      if (!selectionState.isCollapsed() || selectionState.anchorKey !== selectionState.focusKey) {
         this.hideBlock();
         return;
       }
+
       var block = contentState.getBlockForKey(selectionState.anchorKey);
       var bkey = block.getKey();
+
+      if (block.getLength() > 0) {
+        this.hideBlock();
+        return;
+      }
+
       if (block.getType() !== this.blockType) {
         this.blockType = block.getType();
-        setTimeout(this.findNode, 0);
+        if (block.getLength() === 0) {
+          setTimeout(this.findNode, 0);
+        }
         return;
       }
+
       if (this.blockKey === bkey) {
-        this.setState({
-          visible: true
-        });
+        if (block.getLength() > 0) {
+          this.hideBlock();
+        } else {
+          this.setState({
+            visible: true
+          });
+        }
         return;
       }
+
       this.blockKey = bkey;
+      if (block.getLength() > 0) {
+        this.hideBlock();
+        return;
+      }
+
       setTimeout(this.findNode, 0);
     }
+
+    // Show + button regardless of block length
+    // componentWillReceiveProps(newProps) {
+    //   const { editorState } = newProps;
+    //   const contentState = editorState.getCurrentContent();
+    //   const selectionState = editorState.getSelection();
+    //   if (!selectionState.isCollapsed() || selectionState.anchorKey != selectionState.focusKey) {
+    //     this.hideBlock();
+    //     return;
+    //   }
+    //   const block = contentState.getBlockForKey(selectionState.anchorKey);
+    //   const bkey = block.getKey();
+    //   if (block.getType() !== this.blockType) {
+    //     this.blockType = block.getType();
+    //     setTimeout(this.findNode, 0);
+    //     return;
+    //   }
+    //   if (this.blockKey === bkey) {
+    //     this.setState({
+    //       visible: true
+    //     });
+    //     return;
+    //   }
+    //   this.blockKey = bkey;
+    //   setTimeout(this.findNode, 0);
+    // }
+
   }, {
     key: 'hideBlock',
     value: function hideBlock() {
@@ -127,17 +133,17 @@ var AddButton = (function (_React$Component) {
     value: function findNode() {
       var node = (0, _util.getSelectedBlockNode)(window);
       if (node === this.node) {
-        // console.log('Node exists');
         return;
       }
       if (!node) {
-        // console.log('no node');
         this.setState({
           visible: false
         });
         return;
       }
-      var rect = node.getBoundingClientRect();
+
+      // const rect = node.getBoundingClientRect()
+
       this.node = node;
       this.setState({
         visible: true,
@@ -152,7 +158,11 @@ var AddButton = (function (_React$Component) {
       if (this.state.visible) {
         return _react2['default'].createElement(
           'button',
-          { onClick: this.props.addMedia, className: 'add-button', style: this.state.style },
+          {
+            onClick: this.props.addMedia,
+            className: 'add-button',
+            style: this.state.style
+          },
           '+'
         );
       }
@@ -161,13 +171,16 @@ var AddButton = (function (_React$Component) {
   }]);
 
   return AddButton;
-})(_react2['default'].Component);
+})(_react.Component);
+
+AddButton.propTypes = {
+  addMedia: _react.PropTypes.func
+};
 
 exports['default'] = AddButton;
-;
 module.exports = exports['default'];
 
-},{"../util":16,"react":undefined}],2:[function(require,module,exports){
+},{"../util":15,"react":undefined}],2:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -277,11 +290,13 @@ var _stylebutton = require('./stylebutton');
 
 var _stylebutton2 = _interopRequireDefault(_stylebutton);
 
-exports['default'] = function (props) {
+var BlockToolbar = function BlockToolbar(props) {
   var editorState = props.editorState;
 
   // const selection = editorState.getSelection();
   var blockType = _draftJs.RichUtils.getCurrentBlockType(editorState);
+
+  console.log(props);
 
   return _react2['default'].createElement(
     'div',
@@ -298,6 +313,13 @@ exports['default'] = function (props) {
   );
 };
 
+BlockToolbar.propTypes = {
+  editorState: _react.PropTypes.any,
+  buttons: _react.PropTypes.array,
+  onToggle: _react.PropTypes.func
+};
+
+exports['default'] = BlockToolbar;
 module.exports = exports['default'];
 
 },{"./stylebutton":9,"draft-js":undefined,"react":undefined}],6:[function(require,module,exports){
@@ -795,7 +817,8 @@ var INLINE_BUTTONS = [{ label: _react2['default'].createElement(
   ), style: 'STRIKETHROUGH' }, { label: 'Hi', style: 'HIGHLIGHT' }];
 module.exports = exports['default'];
 
-},{"../model/index":12,"../util/index":16,"./blocktoolbar":5,"./inlinetoolbar":8,"draft-js":undefined,"react":undefined,"react-dom":undefined}],11:[function(require,module,exports){
+},{"../model/index":12,"../util/index":15,"./blocktoolbar":5,"./inlinetoolbar":8,"draft-js":undefined,"react":undefined,"react-dom":undefined}],11:[function(require,module,exports){
+(function (global){
 // import 'draft-js/dist/Draft.css';
 // import './index.scss';
 // import './components/blocks/text.scss';
@@ -846,10 +869,6 @@ var _utilKeybinding = require('./util/keybinding');
 
 var _utilKeybinding2 = _interopRequireDefault(_utilKeybinding);
 
-var _utilExporter = require('./util/exporter');
-
-var _utilExporter2 = _interopRequireDefault(_utilExporter);
-
 var _utilBeforeinput = require('./util/beforeinput');
 
 var _utilBeforeinput2 = _interopRequireDefault(_utilBeforeinput);
@@ -895,15 +914,15 @@ function getBlockStyle(block) {
   }
 }
 
-var MyEditor = (function (_React$Component) {
-  _inherits(MyEditor, _React$Component);
+var DraftBlockEditor = (function (_React$Component) {
+  _inherits(DraftBlockEditor, _React$Component);
 
-  function MyEditor(props) {
+  function DraftBlockEditor(props) {
     var _this = this;
 
-    _classCallCheck(this, MyEditor);
+    _classCallCheck(this, DraftBlockEditor);
 
-    _get(Object.getPrototypeOf(MyEditor.prototype), 'constructor', this).call(this, props);
+    _get(Object.getPrototypeOf(DraftBlockEditor.prototype), 'constructor', this).call(this, props);
 
     var decorator = new _draftJs.CompositeDecorator([{
       strategy: _componentsEntitiesLink.findLinkEntities,
@@ -950,7 +969,7 @@ var MyEditor = (function (_React$Component) {
     this.addMedia = this.addMedia.bind(this);
   }
 
-  _createClass(MyEditor, [{
+  _createClass(DraftBlockEditor, [{
     key: 'componentDidMount',
     value: function componentDidMount() {
       this.focus();
@@ -968,11 +987,11 @@ var MyEditor = (function (_React$Component) {
   }, {
     key: 'logData',
     value: function logData(e) {
-      console.log('HTML', (0, _utilExporter2['default'])(this.state.editorState.getCurrentContent()));
-      console.log((0, _draftJs.convertToRaw)(this.state.editorState.getCurrentContent()));
+      global.RAW = (0, _draftJs.convertToRaw)(this.state.editorState.getCurrentContent());
+      global.SEL = this.state.editorState.getSelection();
 
-      console.log(this.state.editorState.getSelection().toJS());
-      window.sel = this.state.editorState.getSelection();
+      console.log('RAW', global.RAW);
+      console.log('SEL', global.SEL.toJS());
     }
   }, {
     key: 'setLink',
@@ -1114,6 +1133,17 @@ var MyEditor = (function (_React$Component) {
       }
     }
   }, {
+    key: 'loadCustomData',
+    value: function loadCustomData(data) {
+      var _this4 = this;
+
+      this.setState({
+        editorState: _draftJs.EditorState.push(this.state.editorState, data)
+      }, function () {
+        return _this4.refs.editor.focus();
+      });
+    }
+  }, {
     key: 'render',
     value: function render() {
       var _state = this.state;
@@ -1123,6 +1153,9 @@ var MyEditor = (function (_React$Component) {
       var urlValue = _state.urlValue;
 
       // console.log(this.props);
+
+      global.editor = this;
+
       return _react2['default'].createElement(
         'div',
         { className: 'RichEditor-root' },
@@ -1174,21 +1207,22 @@ var MyEditor = (function (_React$Component) {
     }
   }]);
 
-  return MyEditor;
+  return DraftBlockEditor;
 })(_react2['default'].Component);
 
 var renderMap = (0, _immutable.Map)();
 
-MyEditor.defaultProps = {
+DraftBlockEditor.defaultProps = {
   beforeInput: _utilBeforeinput2['default'],
   stringToTypeMap: _utilBeforeinput.StringToTypeMap,
   blockRenderMap: _modelRendermap2['default']
 };
 
-exports['default'] = MyEditor;
+exports['default'] = DraftBlockEditor;
 module.exports = exports['default'];
 
-},{"./components/addbutton":1,"./components/customrenderer":6,"./components/entities/link":7,"./components/toolbar":10,"./model":12,"./model/rendermap":13,"./util":16,"./util/beforeinput":14,"./util/exporter":15,"./util/keybinding":17,"draft-js":undefined,"immutable":undefined,"react":undefined}],12:[function(require,module,exports){
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{"./components/addbutton":1,"./components/customrenderer":6,"./components/entities/link":7,"./components/toolbar":10,"./model":12,"./model/rendermap":13,"./util":15,"./util/beforeinput":14,"./util/keybinding":16,"draft-js":undefined,"immutable":undefined,"react":undefined}],12:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1328,9 +1362,6 @@ exports['default'] = function (editorState, str, callback) {
   var blockType = block.getType();
   var blockLength = block.getLength();
 
-  console.log(str, blockType, blockLength);
-  console.log(block.getText()[0] + str);
-
   if (selection.getAnchorOffset() > 1 || blockLength > 1) {
     return false;
   }
@@ -1379,460 +1410,11 @@ exports['default'] = function (editorState, str, callback) {
   //   }
   // }
 
-  console.log(fType);
-
   callback((0, _modelIndex.resetBlockWithType)(editorState, fType));
   return true;
 };
 
 },{"../model/index":12,"ramda":undefined}],15:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, '__esModule', {
-  value: true
-});
-
-var _slicedToArray = (function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i['return']) _i['return'](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError('Invalid attempt to destructure non-iterable instance'); } }; })();
-
-var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
-var _ENTITY_ATTR_MAP, _DATA_TO_ATTR;
-
-exports['default'] = stateToHTML;
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-var _draftJs = require('draft-js');
-
-var _draftJsUtils = require('draft-js-utils');
-
-var BOLD = _draftJsUtils.INLINE_STYLE.BOLD;
-var CODE = _draftJsUtils.INLINE_STYLE.CODE;
-var ITALIC = _draftJsUtils.INLINE_STYLE.ITALIC;
-var STRIKETHROUGH = _draftJsUtils.INLINE_STYLE.STRIKETHROUGH;
-var UNDERLINE = _draftJsUtils.INLINE_STYLE.UNDERLINE;
-
-var INDENT = '  ';
-var BREAK = '<br>';
-
-// Map entity data to element attributes.
-var ENTITY_ATTR_MAP = (_ENTITY_ATTR_MAP = {}, _defineProperty(_ENTITY_ATTR_MAP, _draftJsUtils.ENTITY_TYPE.LINK, { url: 'href', rel: 'rel', target: 'target', title: 'title', className: 'class' }), _defineProperty(_ENTITY_ATTR_MAP, _draftJsUtils.ENTITY_TYPE.IMAGE, { src: 'src', height: 'height', width: 'width', alt: 'alt', className: 'class' }), _ENTITY_ATTR_MAP);
-
-// Map entity data to element attributes.
-var DATA_TO_ATTR = (_DATA_TO_ATTR = {}, _defineProperty(_DATA_TO_ATTR, _draftJsUtils.ENTITY_TYPE.LINK, function (entityType, entity) {
-  var attrMap = ENTITY_ATTR_MAP.hasOwnProperty(entityType) ? ENTITY_ATTR_MAP[entityType] : {};
-  var data = entity.getData();
-  var attrs = {};
-  var _iteratorNormalCompletion = true;
-  var _didIteratorError = false;
-  var _iteratorError = undefined;
-
-  try {
-    for (var _iterator = Object.keys(data)[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-      var dataKey = _step.value;
-
-      var dataValue = data[dataKey];
-      if (attrMap.hasOwnProperty(dataKey)) {
-        var attrKey = attrMap[dataKey];
-        attrs[attrKey] = dataValue;
-      }
-    }
-  } catch (err) {
-    _didIteratorError = true;
-    _iteratorError = err;
-  } finally {
-    try {
-      if (!_iteratorNormalCompletion && _iterator['return']) {
-        _iterator['return']();
-      }
-    } finally {
-      if (_didIteratorError) {
-        throw _iteratorError;
-      }
-    }
-  }
-
-  return attrs;
-}), _defineProperty(_DATA_TO_ATTR, _draftJsUtils.ENTITY_TYPE.IMAGE, function (entityType, entity) {
-  var attrMap = ENTITY_ATTR_MAP.hasOwnProperty(entityType) ? ENTITY_ATTR_MAP[entityType] : {};
-  var data = entity.getData();
-  var attrs = {};
-  var _iteratorNormalCompletion2 = true;
-  var _didIteratorError2 = false;
-  var _iteratorError2 = undefined;
-
-  try {
-    for (var _iterator2 = Object.keys(data)[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-      var dataKey = _step2.value;
-
-      var dataValue = data[dataKey];
-      if (attrMap.hasOwnProperty(dataKey)) {
-        var attrKey = attrMap[dataKey];
-        attrs[attrKey] = dataValue;
-      }
-    }
-  } catch (err) {
-    _didIteratorError2 = true;
-    _iteratorError2 = err;
-  } finally {
-    try {
-      if (!_iteratorNormalCompletion2 && _iterator2['return']) {
-        _iterator2['return']();
-      }
-    } finally {
-      if (_didIteratorError2) {
-        throw _iteratorError2;
-      }
-    }
-  }
-
-  return attrs;
-}), _DATA_TO_ATTR);
-
-// The reason this returns an array is because a single block might get wrapped
-// in two tags.
-function getTags(blockType) {
-  switch (blockType) {
-    case _draftJsUtils.BLOCK_TYPE.HEADER_ONE:
-      return ['h1'];
-    case _draftJsUtils.BLOCK_TYPE.HEADER_TWO:
-      return ['h2'];
-    case _draftJsUtils.BLOCK_TYPE.HEADER_THREE:
-      return ['h3'];
-    case _draftJsUtils.BLOCK_TYPE.HEADER_FOUR:
-      return ['h4'];
-    case _draftJsUtils.BLOCK_TYPE.HEADER_FIVE:
-      return ['h5'];
-    case _draftJsUtils.BLOCK_TYPE.HEADER_SIX:
-      return ['h6'];
-    case _draftJsUtils.BLOCK_TYPE.UNORDERED_LIST_ITEM:
-    case _draftJsUtils.BLOCK_TYPE.ORDERED_LIST_ITEM:
-      return ['li'];
-    case _draftJsUtils.BLOCK_TYPE.BLOCKQUOTE:
-      return ['blockquote'];
-    case _draftJsUtils.BLOCK_TYPE.CODE:
-      return ['pre', 'code'];
-    default:
-      return ['p'];
-  }
-}
-
-function getWrapperTag(blockType) {
-  switch (blockType) {
-    case _draftJsUtils.BLOCK_TYPE.UNORDERED_LIST_ITEM:
-      return 'ul';
-    case _draftJsUtils.BLOCK_TYPE.ORDERED_LIST_ITEM:
-      return 'ol';
-    default:
-      return null;
-  }
-}
-
-var MarkupGenerator = (function () {
-  function MarkupGenerator(contentState) {
-    _classCallCheck(this, MarkupGenerator);
-
-    this.contentState = contentState;
-  }
-
-  _createClass(MarkupGenerator, [{
-    key: 'generate',
-    value: function generate() {
-      this.output = [];
-      this.blocks = this.contentState.getBlocksAsArray();
-      this.totalBlocks = this.blocks.length;
-      this.currentBlock = 0;
-      this.indentLevel = 0;
-      this.wrapperTag = null;
-      while (this.currentBlock < this.totalBlocks) {
-        this.processBlock();
-      }
-      this.closeWrapperTag();
-      return this.output.join('').trim();
-    }
-  }, {
-    key: 'processBlock',
-    value: function processBlock() {
-      var block = this.blocks[this.currentBlock];
-      var blockType = block.getType();
-      var newWrapperTag = getWrapperTag(blockType);
-      if (this.wrapperTag !== newWrapperTag) {
-        if (this.wrapperTag) {
-          this.closeWrapperTag();
-        }
-        if (newWrapperTag) {
-          this.openWrapperTag(newWrapperTag);
-        }
-      }
-      this.indent();
-      this.writeStartTag(blockType);
-      this.output.push(this.renderBlockContent(block));
-      // Look ahead and see if we will nest list.
-      var nextBlock = this.getNextBlock();
-      if (canHaveDepth(blockType) && nextBlock && nextBlock.getDepth() === block.getDepth() + 1) {
-        this.output.push('\n');
-        // This is a litle hacky: temporarily stash our current wrapperTag and
-        // render child list(s).
-        var thisWrapperTag = this.wrapperTag;
-        this.wrapperTag = null;
-        this.indentLevel += 1;
-        this.currentBlock += 1;
-        this.processBlocksAtDepth(nextBlock.getDepth());
-        this.wrapperTag = thisWrapperTag;
-        this.indentLevel -= 1;
-        this.indent();
-      } else {
-        this.currentBlock += 1;
-      }
-      this.writeEndTag(blockType);
-    }
-  }, {
-    key: 'processBlocksAtDepth',
-    value: function processBlocksAtDepth(depth) {
-      var block = this.blocks[this.currentBlock];
-      while (block && block.getDepth() === depth) {
-        this.processBlock();
-        block = this.blocks[this.currentBlock];
-      }
-      this.closeWrapperTag();
-    }
-  }, {
-    key: 'getNextBlock',
-    value: function getNextBlock() {
-      return this.blocks[this.currentBlock + 1];
-    }
-  }, {
-    key: 'writeStartTag',
-    value: function writeStartTag(blockType) {
-      var tags = getTags(blockType);
-      var _iteratorNormalCompletion3 = true;
-      var _didIteratorError3 = false;
-      var _iteratorError3 = undefined;
-
-      try {
-        for (var _iterator3 = tags[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
-          var tag = _step3.value;
-
-          this.output.push('<' + tag + '>');
-        }
-      } catch (err) {
-        _didIteratorError3 = true;
-        _iteratorError3 = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion3 && _iterator3['return']) {
-            _iterator3['return']();
-          }
-        } finally {
-          if (_didIteratorError3) {
-            throw _iteratorError3;
-          }
-        }
-      }
-    }
-  }, {
-    key: 'writeEndTag',
-    value: function writeEndTag(blockType) {
-      var tags = getTags(blockType);
-      if (tags.length === 1) {
-        this.output.push('</' + tags[0] + '>\n');
-      } else {
-        var output = [];
-        var _iteratorNormalCompletion4 = true;
-        var _didIteratorError4 = false;
-        var _iteratorError4 = undefined;
-
-        try {
-          for (var _iterator4 = tags[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
-            var tag = _step4.value;
-
-            output.unshift('</' + tag + '>');
-          }
-        } catch (err) {
-          _didIteratorError4 = true;
-          _iteratorError4 = err;
-        } finally {
-          try {
-            if (!_iteratorNormalCompletion4 && _iterator4['return']) {
-              _iterator4['return']();
-            }
-          } finally {
-            if (_didIteratorError4) {
-              throw _iteratorError4;
-            }
-          }
-        }
-
-        this.output.push(output.join('') + '\n');
-      }
-    }
-  }, {
-    key: 'openWrapperTag',
-    value: function openWrapperTag(wrapperTag) {
-      this.wrapperTag = wrapperTag;
-      this.indent();
-      this.output.push('<' + wrapperTag + '>\n');
-      this.indentLevel += 1;
-    }
-  }, {
-    key: 'closeWrapperTag',
-    value: function closeWrapperTag() {
-      if (this.wrapperTag) {
-        this.indentLevel -= 1;
-        this.indent();
-        this.output.push('</' + this.wrapperTag + '>\n');
-        this.wrapperTag = null;
-      }
-    }
-  }, {
-    key: 'indent',
-    value: function indent() {
-      this.output.push(INDENT.repeat(this.indentLevel));
-    }
-  }, {
-    key: 'renderBlockContent',
-    value: function renderBlockContent(block) {
-      var blockType = block.getType();
-      var text = block.getText();
-      if (text === '') {
-        // Prevent element collapse if completely empty.
-        return BREAK;
-      }
-      text = this.preserveWhitespace(text);
-      var charMetaList = block.getCharacterList();
-      var entityPieces = (0, _draftJsUtils.getEntityRanges)(text, charMetaList);
-      return entityPieces.map(function (_ref) {
-        var _ref2 = _slicedToArray(_ref, 2);
-
-        var entityKey = _ref2[0];
-        var stylePieces = _ref2[1];
-
-        var content = stylePieces.map(function (_ref3) {
-          var _ref32 = _slicedToArray(_ref3, 2);
-
-          var text = _ref32[0];
-          var style = _ref32[1];
-
-          var content = encodeContent(text);
-          // These are reverse alphabetical by tag name.
-          if (style.has(BOLD)) {
-            content = '<strong>' + content + '</strong>';
-          }
-          if (style.has(UNDERLINE)) {
-            content = '<ins>' + content + '</ins>';
-          }
-          if (style.has(ITALIC)) {
-            content = '<em>' + content + '</em>';
-          }
-          if (style.has(STRIKETHROUGH)) {
-            content = '<del>' + content + '</del>';
-          }
-          if (style.has(CODE)) {
-            // If our block type is CODE then we are already wrapping the whole
-            // block in a `<code>` so don't wrap inline code elements.
-            content = blockType === _draftJsUtils.BLOCK_TYPE.CODE ? content : '<code>' + content + '</code>';
-          }
-          return content;
-        }).join('');
-        var entity = entityKey ? _draftJs.Entity.get(entityKey) : null;
-        // Note: The `toUpperCase` below is for compatability with some libraries that use lower-case for image blocks.
-        var entityType = entity == null ? null : entity.getType().toUpperCase();
-        if (entityType != null && entityType === _draftJsUtils.ENTITY_TYPE.LINK) {
-          var attrs = DATA_TO_ATTR.hasOwnProperty(entityType) ? DATA_TO_ATTR[entityType](entityType, entity) : null;
-          var strAttrs = stringifyAttrs(attrs);
-          return '<a' + strAttrs + '>' + content + '</a>';
-        } else if (entityType != null && entityType === _draftJsUtils.ENTITY_TYPE.IMAGE) {
-          var attrs = DATA_TO_ATTR.hasOwnProperty(entityType) ? DATA_TO_ATTR[entityType](entityType, entity) : null;
-          var strAttrs = stringifyAttrs(attrs);
-          return '<img' + strAttrs + '/>';
-        } else {
-          return content;
-        }
-      }).join('');
-    }
-  }, {
-    key: 'preserveWhitespace',
-    value: function preserveWhitespace(text) {
-      var length = text.length;
-      // Prevent leading/trailing/consecutive whitespace collapse.
-      var newText = new Array(length);
-      for (var i = 0; i < length; i++) {
-        if (text[i] === ' ' && (i === 0 || i === length - 1 || text[i - 1] === ' ')) {
-          newText[i] = '\xA0';
-        } else {
-          newText[i] = text[i];
-        }
-      }
-      return newText.join('');
-    }
-  }]);
-
-  return MarkupGenerator;
-})();
-
-function stringifyAttrs(attrs) {
-  if (attrs == null) {
-    return '';
-  }
-  var parts = [];
-  var _iteratorNormalCompletion5 = true;
-  var _didIteratorError5 = false;
-  var _iteratorError5 = undefined;
-
-  try {
-    for (var _iterator5 = Object.keys(attrs)[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
-      var attrKey = _step5.value;
-
-      var attrValue = attrs[attrKey];
-      if (attrValue != null) {
-        parts.push(' ' + attrKey + '="' + encodeAttr(attrValue + '') + '"');
-      }
-    }
-  } catch (err) {
-    _didIteratorError5 = true;
-    _iteratorError5 = err;
-  } finally {
-    try {
-      if (!_iteratorNormalCompletion5 && _iterator5['return']) {
-        _iterator5['return']();
-      }
-    } finally {
-      if (_didIteratorError5) {
-        throw _iteratorError5;
-      }
-    }
-  }
-
-  return parts.join('');
-}
-
-function canHaveDepth(blockType) {
-  switch (blockType) {
-    case _draftJsUtils.BLOCK_TYPE.UNORDERED_LIST_ITEM:
-    case _draftJsUtils.BLOCK_TYPE.ORDERED_LIST_ITEM:
-      return true;
-    default:
-      return false;
-  }
-}
-
-function encodeContent(text) {
-  return text.split('&').join('&amp;').split('<').join('&lt;').split('>').join('&gt;').split('\xA0').join('&nbsp;').split('\n').join(BREAK + '\n');
-}
-
-function encodeAttr(text) {
-  return text.split('&').join('&amp;').split('<').join('&lt;').split('>').join('&gt;').split('"').join('&quot;');
-}
-
-function stateToHTML(content) {
-  return new MarkupGenerator(content).generate();
-}
-
-module.exports = exports['default'];
-
-},{"draft-js":undefined,"draft-js-utils":undefined}],16:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1887,7 +1469,7 @@ var getSelectedBlockNode = function getSelectedBlockNode(root) {
 };
 exports.getSelectedBlockNode = getSelectedBlockNode;
 
-},{}],17:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
