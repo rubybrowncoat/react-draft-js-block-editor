@@ -1,0 +1,19 @@
+{
+  "parser": "babel-eslint",
+  "extends": "airbnb",
+  "rules": {
+    "import/no-unresolved": 0,
+    "semi": [2, "never"],
+    "react/no-string-refs": 2,
+    "max-len": [2, {
+      "code": 100,
+      "ignoreComments": true
+    }],
+    "new-cap": [2, {
+      "capIsNewExceptions": ["Radium"]
+    }]
+  },
+  "globals": {
+    "__DEV__": true
+  }
+}

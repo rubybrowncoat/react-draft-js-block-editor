@@ -14,7 +14,7 @@ coverage.html
 .cover*
 
 # Dependency directory
-node_modules
+node_modules/
 
 # Example build directory
 example/dist

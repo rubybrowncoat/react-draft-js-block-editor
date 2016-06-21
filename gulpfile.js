@@ -25,6 +25,10 @@ var taskConfig = {
 
 			'ramda'
 		],
+    less: {
+      path: 'less',
+      entry: 'DraftJsBlockEditor.less'
+    },
 		lib: 'lib'
 	},
 

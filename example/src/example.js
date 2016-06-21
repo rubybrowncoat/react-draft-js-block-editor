@@ -569,7 +569,9 @@ var App = React.createClass({
 	render () {
 		return (
 			<div>
-				<Editor value={data} />
+				<Editor ref={(c) => { this._editor = c; }} value={data} />
+				<div onClick={() => this._editor.logData() }>export</div>
+				<div onClick={() => this._editor.toggleEdit() }>toggle</div>
 			</div>
 		);
 	}

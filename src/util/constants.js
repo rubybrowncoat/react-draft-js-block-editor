@@ -13,7 +13,7 @@ export const BLOCKS = {
   PULLQUOTE: 'pullquote',
   ATOMIC: 'atomic',
   BLOCKQUOTE_CAPTION: 'block-quote-caption',
-  CAPTION: 'caption'
+  CAPTION: 'caption',
 };
 
 export const INLINE = {
@@ -26,7 +26,8 @@ export const INLINE = {
 };
 
 export const ENTITY = {
-  LINK: 'LINK'
+  LINK: 'LINK',
+	IMAGE: 'IMAGE',
 };
 
 export default {

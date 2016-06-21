@@ -25,7 +25,6 @@ import rendererFn from './components/customrenderer';
 import { getSelectionRect, getSelection } from './util';
 import RenderMap from './model/rendermap';
 import keyBindingFn from './util/keybinding';
-import stateToHTML from './util/exporter';
 import beforeInput, { StringToTypeMap } from './util/beforeinput';
 import { getCurrentBlock, addNewBlock } from './model';
 import Link, { findLinkEntities } from './components/entities/link';
@@ -59,7 +58,7 @@ function getBlockStyle(block) {
   }
 }
 
-class MyEditor extends React.Component {
+class DraftBlockEditor extends React.Component {
 
   constructor(props) {
     super(props);
@@ -122,11 +121,11 @@ class MyEditor extends React.Component {
   };
 
   logData(e) {
-    console.log('HTML', stateToHTML(this.state.editorState.getCurrentContent()))
-    console.log(convertToRaw(this.state.editorState.getCurrentContent()));
+    global.RAW = convertToRaw(this.state.editorState.getCurrentContent());
+    global.SEL = this.state.editorState.getSelection();
 
-    console.log(this.state.editorState.getSelection().toJS());
-    window.sel = this.state.editorState.getSelection();
+    console.log('RAW', global.RAW);
+    console.log('SEL', global.SEL.toJS());
   }
 
   setLink(url) {
@@ -270,9 +269,21 @@ class MyEditor extends React.Component {
     }
   }
 
+  loadCustomData(data) {
+    this.setState({
+      editorState: EditorState.push(
+        this.state.editorState,
+        data
+      )
+    }, () => this.refs.editor.focus());
+  }
+
   render() {
     const { editorState, showURLInput, editorEnabled, urlValue } = this.state;
     // console.log(this.props);
+
+    global.editor = this;
+
     return (
       <div className="RichEditor-root">
         <div className="RichEditor-editor">
@@ -314,11 +325,11 @@ class MyEditor extends React.Component {
 
 const renderMap = Map();
 
-MyEditor.defaultProps = {
+DraftBlockEditor.defaultProps = {
   beforeInput,
   stringToTypeMap: StringToTypeMap,
   blockRenderMap: RenderMap,
 };
 
 
-export default MyEditor;
+export default DraftBlockEditor;
