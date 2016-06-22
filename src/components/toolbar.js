@@ -247,6 +247,6 @@ const INLINE_BUTTONS = [
   { label: <i>I</i>, style: 'ITALIC' },
   { label: <u>U</u>, style: 'UNDERLINE' },
   { label: <strike>S</strike>, style: 'STRIKETHROUGH' },
-  { label: <pre>C</pre>, style: 'CODE' },
+  { label: <pre style={{ display: 'inline' }}>C</pre>, style: 'CODE' },
   { label: 'Hi', style: 'HIGHLIGHT' },
 ]

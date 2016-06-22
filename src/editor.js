@@ -1,7 +1,3 @@
-// import 'draft-js/dist/Draft.css';
-// import './index.scss';
-// import './components/blocks/text.scss';
-
 import React from 'react'
 import {
   Editor,
@@ -100,9 +96,6 @@ class DraftBlockEditor extends React.Component {
     this.handleKeyCommand = this.handleKeyCommand.bind(this)
     this.handleBeforeInput = this.handleBeforeInput.bind(this)
     this.handleReturn = this.handleReturn.bind(this)
-    this.toggleBlockType = this._toggleBlockType.bind(this)
-    this.toggleInlineStyle = this._toggleInlineStyle.bind(this)
-    this.toggleEdit = this.toggleEdit.bind(this)
     this.loadSavedData = this.loadSavedData.bind(this)
     this.setLink = this.setLink.bind(this)
     this.addMedia = this.addMedia.bind(this)
@@ -223,7 +216,7 @@ class DraftBlockEditor extends React.Component {
     return false
   }
 
-  _toggleBlockType(blockType) {
+  toggleBlockType = (blockType) => {
     this.onChange(
       RichUtils.toggleBlockType(
         this.state.editorState,
@@ -232,7 +225,7 @@ class DraftBlockEditor extends React.Component {
     )
   }
 
-  _toggleInlineStyle(inlineStyle) {
+  toggleInlineStyle = (inlineStyle) => {
     this.onChange(
       RichUtils.toggleInlineStyle(
         this.state.editorState,
@@ -241,7 +234,7 @@ class DraftBlockEditor extends React.Component {
     )
   }
 
-  toggleEdit(e) {
+  toggleEdit = () => {
     this.setState({
       editorEnabled: !this.state.editorEnabled,
     })

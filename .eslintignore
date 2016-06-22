@@ -3,3 +3,5 @@ dist/*
 example/dist/*
 lib/*
 node_modules/*
+tasks/*
+gulpfile.js
