@@ -1,10 +1,10 @@
-import React, {Component, PropTypes} from "react";
-import { EditorBlock } from 'draft-js';
+import React, { Component, PropTypes } from 'react'
+import { EditorBlock } from 'draft-js'
 
 export default class Paragraph extends Component {
-   render(){
+  render() {
     return (
       <EditorBlock {...this.props} />
-    );
-   }
+    )
+  }
 }

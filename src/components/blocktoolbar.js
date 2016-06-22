@@ -1,13 +1,14 @@
-import React from 'react';
-import { RichUtils } from 'draft-js';
+import React, { PropTypes } from 'react'
+import { RichUtils } from 'draft-js'
 
-import StyleButton from './stylebutton';
+import StyleButton from './stylebutton'
 
-
-export default (props) => {
-  const {editorState} = props;
+const BlockToolbar = (props) => {
+  const { editorState } = props
   // const selection = editorState.getSelection();
-  const blockType = RichUtils.getCurrentBlockType(editorState);
+  const blockType = RichUtils.getCurrentBlockType(editorState)
+
+  console.log(props)
 
   return (
     <div className="RichEditor-controls">
@@ -21,5 +22,13 @@ export default (props) => {
         />
       )}
     </div>
-  );
-};
+  )
+}
+
+BlockToolbar.propTypes = {
+  editorState: PropTypes.any,
+  buttons: PropTypes.array,
+  onToggle: PropTypes.func,
+}
+
+export default BlockToolbar

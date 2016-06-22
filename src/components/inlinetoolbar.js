@@ -1,10 +1,11 @@
-import React from 'react';
+import React from 'react'
 
-import StyleButton from './stylebutton';
+import StyleButton from './stylebutton'
 
 
 export default (props) => {
-  let currentStyle = props.editorState.getCurrentInlineStyle();
+  let currentStyle = props.editorState.getCurrentInlineStyle()
+
   return (
     <div className="RichEditor-controls">
       {props.buttons.map(type =>
@@ -17,5 +18,5 @@ export default (props) => {
         />
       )}
     </div>
-  );
-};
+  )
+}
